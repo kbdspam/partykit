@@ -247,6 +247,8 @@ export class InMemoryConnectionManager<TState> implements ConnectionManager {
  * When opting into hibernation, the platform tracks connections for us.
  */
 export class HibernatingConnectionManager<TState> implements ConnectionManager {
+  lastId: number = 0;
+
   constructor(private controller: DurableObjectState) {}
 
   getCount() {
@@ -305,9 +307,10 @@ export class HibernatingConnectionManager<TState> implements ConnectionManager {
     }
 
     this.controller.acceptWebSocket(connection, tags);
+    this.lastId += 1;
     connection.serializeAttachment({
       __pk: {
-        id: connection.id,
+        id: String(this.lastId),
         uri: connection.uri
       },
       __user: null
