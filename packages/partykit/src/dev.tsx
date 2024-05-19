@@ -11,7 +11,7 @@ import esbuild from "esbuild";
 import { execaCommandSync } from "execa";
 import getPort from "get-port";
 import { Box, render, Text, useApp, useInput, useStdin } from "ink";
-import { Log, Miniflare, TypedEventTarget } from "miniflare";
+import { Log, LogLevel, Miniflare, TypedEventTarget } from "miniflare";
 import { onExit } from "signal-exit";
 import { fetch } from "undici";
 
@@ -717,7 +717,7 @@ function useDev(options: DevProps): {
     if (!config.compatibilityDate) {
       logger.warn(
         `No compatibilityDate specified in configuration, defaulting to ${currentUTCDate}
-    You can silence this warning by adding this to your partykit.json file: 
+    You can silence this warning by adding this to your partykit.json file:
       "compatibilityDate": "${currentUTCDate}"
     or by passing it in via the CLI
       --compatibility-date ${currentUTCDate}`
@@ -778,7 +778,7 @@ function useDev(options: DevProps): {
                 .map(
                   ([name, party]) =>
                     `
-import ${name} from '${party}'; 
+import ${name} from '${party}';
 export const ${name}DO = createDurable(${name}, { name: "${name}" });
 Workers["${name}"] = ${name};
 `
@@ -882,7 +882,7 @@ Workers["${name}"] = ${name};
                       httpsKeyPath: options.httpsKeyPath,
                       httpsCertPath: options.httpsCertPath,
                       host: "0.0.0.0",
-                      log: new Log(5, { prefix: "pk" }),
+                      log: new Log(process.env.LOGLEVEL ? +process.env.LOGLEVEL : LogLevel.WARN, { prefix: "pk" }),
                       verbose: options.verbose,
                       inspectorPort: portForRuntimeInspector,
                       handleRuntimeStdio,
