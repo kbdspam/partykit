@@ -209,13 +209,13 @@ function getLocalPersistencePath(
 ) {
   return persistTo
     ? // If path specified, always treat it as relative to cwd()
-      path.resolve(process.cwd(), persistTo)
+    path.resolve(process.cwd(), persistTo)
     : // Otherwise, treat it as relative to partykit.json,
-      // if one can be found, otherwise cwd()
-      path.resolve(
-        configPath ? path.dirname(configPath) : process.cwd(),
-        ".partykit/state"
-      );
+    // if one can be found, otherwise cwd()
+    path.resolve(
+      configPath ? path.dirname(configPath) : process.cwd(),
+      ".partykit/state"
+    );
 }
 
 export class MiniflareServer extends TypedEventTarget<MiniflareServerEventMap> {
@@ -870,9 +870,9 @@ Workers["${name}"] = ${name};
                   const persistencePath =
                     localPersistencePath !== false
                       ? getLocalPersistencePath(
-                          localPersistencePath,
-                          options.config
-                        )
+                        localPersistencePath,
+                        options.config
+                      )
                       : undefined;
 
                   void server.onBundleUpdate(
@@ -896,32 +896,31 @@ Workers["${name}"] = ${name};
                         ...vars,
                         ...(config.ai
                           ? {
-                              PARTYKIT_AI:
-                                config.ai === true
-                                  ? {
-                                      apiGateway: `${API_BASE}/ai/${userDetails?.namespace}/dev`,
-                                      apiToken: userDetails!.token,
-                                      apiEndpoint: `${API_BASE}/ai/${userDetails?.namespace}/dev`,
-                                      sessionOptions: {
-                                        extraHeaders: {
-                                          "User-Agent": "partykit-dev",
-                                          "X-PartyKit-Version": "0.0.0",
-                                          "X-CLOUDFLARE-ACCOUNT-ID":
-                                            process.env.CLOUDFLARE_ACCOUNT_ID ||
-                                            "",
-                                          "X-CLOUDFLARE-API-TOKEN":
-                                            process.env.CLOUDFLARE_API_TOKEN ||
-                                            "",
-                                          Authorization: `Bearer ${
-                                            userDetails!.token
-                                          }`,
-                                          "X-PartyKit-User-Type":
-                                            userDetails!.type
-                                        }
-                                      }
+                            PARTYKIT_AI:
+                              config.ai === true
+                                ? {
+                                  apiGateway: `${API_BASE}/ai/${userDetails?.namespace}/dev`,
+                                  apiToken: userDetails!.token,
+                                  apiEndpoint: `${API_BASE}/ai/${userDetails?.namespace}/dev`,
+                                  sessionOptions: {
+                                    extraHeaders: {
+                                      "User-Agent": "partykit-dev",
+                                      "X-PartyKit-Version": "0.0.0",
+                                      "X-CLOUDFLARE-ACCOUNT-ID":
+                                        process.env.CLOUDFLARE_ACCOUNT_ID ||
+                                        "",
+                                      "X-CLOUDFLARE-API-TOKEN":
+                                        process.env.CLOUDFLARE_API_TOKEN ||
+                                        "",
+                                      Authorization: `Bearer ${userDetails!.token
+                                        }`,
+                                      "X-PartyKit-User-Type":
+                                        userDetails!.type
                                     }
-                                  : (config.ai as Json)
-                            }
+                                  }
+                                }
+                                : (config.ai as Json)
+                          }
                           : {}),
                         ...(config.vectorize
                           ? { PARTYKIT_VECTORIZE: vectorizeBindings }
