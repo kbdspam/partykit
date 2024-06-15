@@ -633,13 +633,16 @@ function useDev(options: DevProps): {
     undefined
   );
 
+  let os = require("os");
+  let hostname = os.hostname();
   const assetDefines = useMemo(
     () => ({
-      PARTYKIT_HOST: `"127.0.0.1:${portForServer}"`,
+      PARTYKIT_HOST: hostname.includes("cursor-party-") ? `"${hostname}.c.ookie.click"` : `"127.0.0.1:${portForServer}"`,
       ...config.define
     }),
     [config.define, portForServer]
   );
+  // console.log(hostname);
 
   if (!config.main) {
     throw new Error(
@@ -760,6 +763,8 @@ function useDev(options: DevProps): {
         "/"
       );
 
+      let os = require("os");
+      let hostname = os.hostname();
       ctx = await esbuild.context({
         stdin: {
           contents: workerFacade
@@ -802,7 +807,7 @@ Workers["${name}"] = ${name};
           )
         ],
         define: {
-          PARTYKIT_HOST: `"127.0.0.1:${portForServer}"`,
+          PARTYKIT_HOST: hostname.includes("cursor-party-") ? `"${hostname}.c.ookie.click"` : `"127.0.0.1:${portForServer}"`,
           PARTYKIT_API_BASE: `"${API_BASE}"`,
           ...esbuildOptions.define,
           ...config.define
